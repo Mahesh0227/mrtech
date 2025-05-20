@@ -5,10 +5,11 @@ const db = require('../config/database');
 const enquiryController = {
     submitEnquiry: (req, res) => {
         const { name, email, mobile, course, city, education } = req.body;
+        const today = new Date();
 
-        const sql = `INSERT INTO enroll (name, email, phone, course, city, education,) VALUES (?, ?, ?, ?, ?, ?)`;
+        const sql = `INSERT INTO enroll (name, email, phone, course, city, education, enrolldate) VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-        db.query(sql, [name, email, mobile, course, city, education], (err, result) => {
+        db.query(sql, [name, email, mobile, course, city, education, today], (err, result) => {
             if (err) {
                 console.error("Error inserting data:", err);
                 return res.status(500).json({ success: false, message: "Database error: " + err.message });
@@ -31,15 +32,7 @@ const enquiryController = {
     },
 
     // API to fetch the latest 10 enquiries
-    getLatestEnquiries: (req, res) => {
-        const query = `SELECT id, name, phone, course, city FROM enroll ORDER BY id DESC LIMIT 10`;
-        db.query(query, (err, results) => {
-            if (err) {
-                return res.status(500).json({ error: "Database query failed" });
-            }
-            res.json(results);
-        });
-    }
+  
 };
 
 module.exports = enquiryController;

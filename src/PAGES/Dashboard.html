@@ -40,7 +40,7 @@
 				<div class="profile-dropdown">
 					<a href="#" id="profile-link"><span class="material-icons">account_circle</span> Profile</a>
 					<a href="settings.html"><span class="material-icons">settings</span> Settings</a>
-					<a href="loginpage.html"><span class="material-icons">logout</span> Logout</a>
+					<a href="loginpage.html" style="color: red;"><span class="material-icons">logout</span> Logout</a>
 				</div>
 			</div>
 		</div>
@@ -136,12 +136,12 @@
 						<select id="BatchStatus" onchange="loadBatchCodes()">
 							<option value="">Select Status</option>
 						</select>
-					
+
 						<label for="batchCode">Select Batch:</label>
 						<select id="batchCodeDropdown">
 							<option value="">Select Batch</option>
 						</select>
-					</li>					
+					</li>
 
 					<li>
 						<button onclick="viewStudents()">View</button>
@@ -228,6 +228,7 @@
 						<thead>
 							<tr>
 								<th>S.No</th>
+								<th>Date</th>
 								<th>Name</th>
 								<th>Phone</th>
 								<th>Course</th>
@@ -237,7 +238,6 @@
 						<tbody id="latestEnquiries" style="font-size: 12px;">
 							<tr>
 								<td colspan="5">Loading...</td>
-								<!-- The value will be updated dynamically or Ensure default value  -->
 							</tr>
 						</tbody>
 					</table>

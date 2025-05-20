@@ -51,7 +51,7 @@ const batchControllers = {
 
     //**Up Coming courses count */
     Activecount: (req, res) => {
-        const query = "SELECT COUNT(*) AS activeCourses FROM batches WHERE status = 'Up Coming'";
+        const query = "SELECT COUNT(*) AS activeCourses FROM batches WHERE status = 'On Going'";
         db.query(query, (err, result) => {
             if (err) {
                 console.log(err);

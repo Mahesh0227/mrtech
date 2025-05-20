@@ -125,7 +125,7 @@ const studentController = {
 
     // get the latest 10 enquries 
     getLatestEnquiries: (req, res) => {
-        const sql = `SELECT id, name, phone, course, city FROM enroll ORDER BY id DESC LIMIT 10`;
+        const sql = `SELECT DATE_FORMAT(enrolldate, '%Y-%m-%d') AS enrolldate, name, phone, course, city FROM enroll ORDER BY id DESC LIMIT 10`;
 
         db.query(sql, (err, results) => {
             if (err) {

@@ -64,7 +64,6 @@ app.post("/updateAdminDetails", settingsController.updateAdminDetails);
 // << ENQUIRY ROUTES >>>
 app.post('/EnquiryForm', enquiryController.submitEnquiry);
 app.get('/total-enquiries', enquiryController.getTotalEnquiries);
-app.get('/latest-enquiries', enquiryController.getLatestEnquiries);
 
 // << COURSE ROUTES >>
 // Course routes dor add batch also 

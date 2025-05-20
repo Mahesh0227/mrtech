@@ -193,6 +193,7 @@ function fetchLatestStudents() {
 //end,,,the LatestStudents
 
 //**GET THE LATEST 10 ENQURIES API */
+// main.js
 document.addEventListener("DOMContentLoaded", function () {
 	fetchLatestEnquiries();
 });
@@ -207,7 +208,7 @@ function fetchLatestEnquiries() {
 			data.forEach((enquiry, index) => {
 				const row = document.createElement("tr");
 				row.innerHTML = `
-                    <td>${index + 1}</td>
+					 <td>${enquiry.enrolldate}</td>
                     <td>${enquiry.name}</td>
                     <td>${enquiry.phone}</td>
                     <td>${enquiry.course}</td>
@@ -222,61 +223,61 @@ function fetchLatestEnquiries() {
 
 // Load statuses dynamically on page load
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadStatuses(); // Load status list from DB
+	await loadStatuses(); // Load status list from DB
 });
 
 // Load statuses from server
 async function loadStatuses() {
-    const statusSelect = document.getElementById("BatchStatus");
+	const statusSelect = document.getElementById("BatchStatus");
 
-    try {
-        const response = await fetch("/getStudentBatches");
-        const statuses = await response.json();
+	try {
+		const response = await fetch("/getStudentBatches");
+		const statuses = await response.json();
 
-        statusSelect.innerHTML = `<option value="">Select Status</option>`;
+		statusSelect.innerHTML = `<option value="">Select Status</option>`;
 
-        statuses.forEach(item => {
-            const option = document.createElement("option");
-            option.value = item.Status;
-            option.textContent = item.Status;
-            statusSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Failed to fetch statuses", error);
-    }
+		statuses.forEach(item => {
+			const option = document.createElement("option");
+			option.value = item.Status;
+			option.textContent = item.Status;
+			statusSelect.appendChild(option);
+		});
+	} catch (error) {
+		console.error("Failed to fetch statuses", error);
+	}
 }
 
 // Load batch codes based on selected status
 async function loadBatchCodes() {
-    const status = document.getElementById("BatchStatus").value;
-    const batchSelect = document.getElementById("batchCodeDropdown");
+	const status = document.getElementById("BatchStatus").value;
+	const batchSelect = document.getElementById("batchCodeDropdown");
 
-    batchSelect.innerHTML = `<option value="">Select Batch</option>`;
-    if (!status) return;
+	batchSelect.innerHTML = `<option value="">Select Batch</option>`;
+	if (!status) return;
 
-    try {
-        const response = await fetch(`/getBatchesByStatus/${status}`);
-        const batches = await response.json();
+	try {
+		const response = await fetch(`/getBatchesByStatus/${status}`);
+		const batches = await response.json();
 
-        batches.forEach(batch => {
-            const option = document.createElement("option");
-            option.value = batch.BatchCode;
-            option.textContent = batch.BatchCode;
-            batchSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Error loading batch codes", error);
-    }
+		batches.forEach(batch => {
+			const option = document.createElement("option");
+			option.value = batch.BatchCode;
+			option.textContent = batch.BatchCode;
+			batchSelect.appendChild(option);
+		});
+	} catch (error) {
+		console.error("Error loading batch codes", error);
+	}
 }
 
 // Download Excel File for Selected Batch
 function downloadExcel() {
-    const batchCode = document.getElementById("batchCodeDropdown").value; // Fixed reference
-    if (!batchCode) {
-        alert("Please select a batch code.");
-        return;
-    }
-    window.location.href = `/export-students?batchCode=${batchCode}`;
+	const batchCode = document.getElementById("batchCodeDropdown").value; // Fixed reference
+	if (!batchCode) {
+		alert("Please select a batch code.");
+		return;
+	}
+	window.location.href = `/export-students?batchCode=${batchCode}`;
 }
 
 // Load statuses on page load (fixed reference)
