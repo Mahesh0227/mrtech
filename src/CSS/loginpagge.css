@@ -6,12 +6,18 @@
 
 body {
     font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background: url('../img/WhatsApp Image 2025-05-23 at 14.07.00.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    margin: 0;
 }
+
+
 
 .container {
     width: 360px;
@@ -22,7 +28,8 @@ body {
 
 .card-wrapper {
     width: 100%;
-    min-height: 500px; /* Add a minimum height for center alignment */
+    min-height: 500px;
+    /* Add a minimum height for center alignment */
     position: relative;
     transition: transform 0.8s ease-in-out;
     transform-style: preserve-3d;
@@ -54,7 +61,7 @@ body {
 
 .card h2 {
     text-align: center;
-    color: #b5b9dc;
+    color: #000000;
     margin-bottom: 25px;
 }
 
@@ -68,13 +75,13 @@ body {
     padding: 12px 10px;
     border: none;
     border-radius: 10px;
-    background: rgba(181, 185, 220, 0.2);
-    color: #fff;
+    background: rgba(115, 115, 115, 0.2);
+    color: #000000;
     font-size: 1rem;
 }
 
 .form-group input:focus {
-    background: rgba(181, 185, 220, 0.35);
+    background: rgba(115, 115, 115, 0.2);
     outline: none;
 }
 
@@ -82,7 +89,7 @@ body {
     position: absolute;
     left: 12px;
     top: 12px;
-    color: #d0d3e4;
+    color: #000000;
     transition: 0.3s ease;
     pointer-events: none;
 }
@@ -114,7 +121,7 @@ button:hover {
 .switch-link {
     margin-top: 15px;
     text-align: center;
-    color: #b5b9dc;
+    color: #000000;
     cursor: pointer;
     text-decoration: underline;
     font-size: 0.95rem;
