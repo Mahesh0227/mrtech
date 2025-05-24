@@ -86,21 +86,8 @@ const studentController = {
     },
 
 
-    // API to fetch the latest 10 student registrations
-    getLatestStudents: (req, res) => {
-        const sql = `SELECT StudentID, BatchCode, CONCAT(FirstName, ' ', LastName) AS FullName, MobileNumber, Course, Town AS City 
-                     FROM student 
-                     ORDER BY StudentID DESC 
-                     LIMIT 20`;
+    
 
-        db.query(sql, (err, results) => {
-            if (err) {
-                console.error("Error fetching latest students:", err);
-                return res.status(500).json({ error: "Database query error" });
-            }
-            res.json(results);
-        });
-    },
 
     // total count
     getTotalStudents: (req, res) => {
@@ -123,18 +110,63 @@ const studentController = {
         });
     },
 
-    // get the latest 10 enquries 
-    getLatestEnquiries: (req, res) => {
-        const sql = `SELECT DATE_FORMAT(enrolldate, '%Y-%m-%d') AS enrolldate, name, phone, course, city FROM enroll ORDER BY id DESC LIMIT 10`;
+    // GET latest enquiries with pagination
+getLatestEnquiries: (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
 
-        db.query(sql, (err, results) => {
-            if (err) {
-                console.error("Error fetching latest enquiries:", err);
-                return res.status(500).json({ error: "Database query error" });
-            }
-            res.json(results);
+    const countQuery = "SELECT COUNT(*) AS total FROM enroll";
+    db.query(countQuery, (err, countResult) => {
+        if (err) return res.status(500).json({ error: "Database count error" });
+
+        const totalRecords = countResult[0].total;
+        const totalPages = Math.ceil(totalRecords / limit);
+
+        const dataQuery = `
+            SELECT DATE_FORMAT(enrolldate, '%Y-%m-%d') AS enrolldate, name, phone, course, city
+            FROM enroll
+            ORDER BY id DESC
+            LIMIT ? OFFSET ?
+        `;
+        db.query(dataQuery, [limit, offset], (err, dataResult) => {
+            if (err) return res.status(500).json({ error: "Database data error" });
+
+            res.json({
+                enquiries: dataResult,
+                totalPages,
+                currentPage: page
+            });
         });
-    },
+    });
+},
+
+// GET latest students with pagination
+getLatestStudents: (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const offset = (page - 1) * limit;
+
+    const countQuery = "SELECT COUNT(*) AS total FROM student";
+    const dataQuery = `
+        SELECT StudentID, BatchCode, CONCAT(FirstName, ' ', LastName) AS FullName, MobileNumber, Course, Town AS City 
+        FROM student 
+        ORDER BY StudentID DESC 
+        LIMIT ? OFFSET ?
+    `;
+
+    db.query(countQuery, (err, countResult) => {
+        if (err) return res.status(500).json({ error: "Count query error" });
+
+        const total = countResult[0].total;
+
+        db.query(dataQuery, [limit, offset], (err, results) => {
+            if (err) return res.status(500).json({ error: "Data query error" });
+
+            res.json({ students: results, total });
+        });
+    });
+},
 
 
     // **API to Fetch Batch Codes**

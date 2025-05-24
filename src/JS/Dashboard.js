@@ -164,61 +164,118 @@ function fetchTotalEnquiries() {
 //TotalEnquiries,,,,, end
 
 //LatestStudents Api
+// ========== STUDENT PAGINATION ==========
+let studentCurrentPage = 1;
+let studentPageSize = 20;
+let studentTotalPages = 1;
+
 document.addEventListener("DOMContentLoaded", function () {
-	fetchLatestStudents();
+	fetchStudentPage(studentCurrentPage);
+	fetchEnquiryPage(enquiryCurrentPage);
 });
 
-function fetchLatestStudents() {
-	fetch("/latest-students")
+function fetchStudentPage(page) {
+	fetch(`/latest-students?page=${page}&limit=${studentPageSize}`)
 		.then(response => response.json())
 		.then(data => {
+			const { students, total } = data;
 			const tableBody = document.getElementById("latestStudents");
-			tableBody.innerHTML = ""; // Clear previous entries
+			tableBody.innerHTML = "";
 
-			data.forEach(student => {
-				const row = document.createElement("tr");
-				row.innerHTML = `
-                    <td>${student.StudentID}</td>
-                    <td>${student.BatchCode}</td>
-                    <td>${student.FullName}</td>
-                    <td>${student.MobileNumber}</td>
-                    <td>${student.Course}</td>
-                    <td>${student.City}</td>
-                `;
-				tableBody.appendChild(row);
-			});
+			if (students.length === 0) {
+				tableBody.innerHTML = `<tr><td colspan="6">No students found.</td></tr>`;
+			} else {
+				students.forEach(student => {
+					const row = document.createElement("tr");
+					row.innerHTML = `
+						<td>${student.StudentID}</td>
+						<td>${student.BatchCode}</td>
+						<td>${student.FullName}</td>
+						<td>${student.MobileNumber}</td>
+						<td>${student.Course}</td>
+						<td>${student.City}</td>
+					`;
+					tableBody.appendChild(row);
+				});
+			}
+
+			studentTotalPages = Math.ceil(total / studentPageSize);
+			studentCurrentPage = page;
+
+			document.getElementById("studentCurrentPage").textContent = studentCurrentPage;
+			document.getElementById("studentTotalPages").textContent = studentTotalPages;
 		})
-		.catch(error => console.error("Error fetching latest students:", error));
+		.catch(error => console.error("Error fetching student page:", error));
 }
-//end,,,the LatestStudents
 
-//**GET THE LATEST 10 ENQURIES API */
-// main.js
-document.addEventListener("DOMContentLoaded", function () {
-	fetchLatestEnquiries();
-});
+function changeStudentPage(offset) {
+	const newPage = studentCurrentPage + offset;
+	if (newPage >= 1 && newPage <= studentTotalPages) {
+		fetchStudentPage(newPage);
+	}
+}
 
-function fetchLatestEnquiries() {
-	fetch("/latest-enquiries")
+function jumpToStudentPage(inputPage) {
+	const page = parseInt(inputPage);
+	if (page >= 1 && page <= studentTotalPages) {
+		fetchStudentPage(page);
+	} else {
+		alert(`Please enter a page number between 1 and ${studentTotalPages}`);
+	}
+}
+
+// ========== ENQUIRY PAGINATION ==========
+let enquiryCurrentPage = 1;
+let enquiryTotalPages = 1;
+
+function fetchEnquiryPage(page) {
+	fetch(`/latest-enquiries?page=${page}`)
 		.then(response => response.json())
 		.then(data => {
 			const tableBody = document.getElementById("latestEnquiries");
-			tableBody.innerHTML = ""; // Clear previous entries
+			tableBody.innerHTML = "";
 
-			data.forEach((enquiry, index) => {
-				const row = document.createElement("tr");
-				row.innerHTML = `
-					 <td>${enquiry.enrolldate}</td>
-                    <td>${enquiry.name}</td>
-                    <td>${enquiry.phone}</td>
-                    <td>${enquiry.course}</td>
-                    <td>${enquiry.city}</td>
-                `;
-				tableBody.appendChild(row);
-			});
+			if (data.enquiries.length === 0) {
+				tableBody.innerHTML = `<tr><td colspan="5">No enquiries found.</td></tr>`;
+			} else {
+				data.enquiries.forEach(enquiry => {
+					const row = document.createElement("tr");
+					row.innerHTML = `
+						<td>${enquiry.enrolldate}</td>
+						<td>${enquiry.name}</td>
+						<td>${enquiry.phone}</td>
+						<td>${enquiry.course}</td>
+						<td>${enquiry.city}</td>
+					`;
+					tableBody.appendChild(row);
+				});
+			}
+
+			enquiryCurrentPage = data.currentPage;
+			enquiryTotalPages = data.totalPages;
+
+			document.getElementById("enquiryCurrentPage").textContent = enquiryCurrentPage;
+			document.getElementById("enquiryTotalPages").textContent = enquiryTotalPages;
 		})
-		.catch(error => console.error("Error fetching latest enquiries:", error));
+		.catch(error => console.error("Error fetching enquiries:", error));
 }
+
+function changeEnquiryPage(offset) {
+	const newPage = enquiryCurrentPage + offset;
+	if (newPage >= 1 && newPage <= enquiryTotalPages) {
+		fetchEnquiryPage(newPage);
+	}
+}
+
+function jumpToEnquiryPage(inputPage) {
+	const page = parseInt(inputPage);
+	if (!isNaN(page) && page >= 1 && page <= enquiryTotalPages) {
+		fetchEnquiryPage(page);
+	} else {
+		alert(`Please enter a page number between 1 and ${enquiryTotalPages}`);
+	}
+}
+
 //** END,,,,,GET THE LATEST 10 ENQURIES API  */
 
 // Load statuses dynamically on page load

@@ -196,9 +196,16 @@
 
 			<div class="enquiries">
 				<div class="table">
-					<div class="head">
-						<h3>Latest 10 Student Registrations</h3>
+					<div class="head" style="display: flex; justify-content: space-between; align-items: center;">
+						<h3>Latest 20 Student Registrations</h3>
+						<div id="studentsPager" style="font-size: 12px;">
+							Page <span id="studentCurrentPage">1</span> of <span id="studentTotalPages">1</span>
+							<button onclick="changeStudentPage(-1)">Prev</button>
+							<button onclick="changeStudentPage(1)">Next</button>
+							Go to: <input type="number" id="studentPageInput" style="width: 40px;" min="1" onchange="jumpToStudentPage(this.value)">
+						</div>
 					</div>
+					
 					<table class="enquiries-table">
 						<thead>
 							<tr>
@@ -221,13 +228,20 @@
 				</div>
 
 				<div class="table">
-					<div class="head">
-						<h3>Latest 10 Enquiries</h3>
+					<div class="head" style="display: flex; justify-content: space-between; align-items: center;">
+						<h3>Latest Enquiries</h3>
+						<div id="enquiryPager" style="font-size: 12px;">
+							Page <span id="enquiryCurrentPage">1</span> of <span id="enquiryTotalPages">1</span>
+							<button onclick="changeEnquiryPage(-1)">Prev</button>
+							<button onclick="changeEnquiryPage(1)">Next</button>
+							Go to: 
+							<input type="number" id="enquiryPageInput" style="width: 40px;" min="1" onchange="jumpToEnquiryPage(this.value)">
+						</div>
 					</div>
-					<table class="enquiries-table">
+				
+					<table class="enquiries-table" style="width: 100%; border-collapse: collapse; font-size: 12px;">
 						<thead>
 							<tr>
-								<th>S.No</th>
 								<th>Date</th>
 								<th>Name</th>
 								<th>Phone</th>
@@ -235,13 +249,14 @@
 								<th>City</th>
 							</tr>
 						</thead>
-						<tbody id="latestEnquiries" style="font-size: 12px;">
+						<tbody id="latestEnquiries">
 							<tr>
 								<td colspan="5">Loading...</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
+				
 			</div>
 	</main>
 
