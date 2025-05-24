@@ -547,7 +547,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // get the batch id = batch code which is the diplay from the batches table
 document.addEventListener("DOMContentLoaded", function () {
-    fetch("/batchecode?status=Up Coming") // Fetch only Active batches from backend
+    fetch("/batchecode") // Fetch only Active batches from backend
         .then(response => response.json())
         .then(data => {
             const batchDropdown = document.getElementById("batchCode");

@@ -37,7 +37,7 @@ const batchControllers = {
 
     //**for student from */
     Batcheactive: (req, res) => {
-        const sql = "SELECT batchid FROM batches WHERE Status = 'Up Coming'";
+        const sql = "SELECT batchid FROM batches WHERE Status IN ('Up Coming', 'On Going')";
         db.query(sql, (err, result) => {
             if (err) {
                 console.error("Error fetching batches:", err);
