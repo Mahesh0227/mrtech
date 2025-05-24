@@ -6,7 +6,7 @@
 
 body {
     font-family: "Poppins", sans-serif;
-    background: url('../img/WhatsApp Image 2025-05-23 at 14.07.00.jpeg') no-repeat center center fixed;
+    background: rgb(231, 252, 255);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -16,7 +16,6 @@ body {
     min-height: 100vh;
     margin: 0;
 }
-
 
 
 .container {

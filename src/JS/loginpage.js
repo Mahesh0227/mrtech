@@ -191,7 +191,7 @@ function verifyForgotPhone() {
         verifiedPhone = phone;
         alert("Phone verified successfully.");
         document.getElementById("step1").style.display = "none";
-        document.getElementById("step2").style.display = "block"; cvvv
+        document.getElementById("step2").style.display = "block";
       } else {
         alert(data.message);
       }
