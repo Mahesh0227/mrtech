@@ -166,7 +166,7 @@ function fetchTotalEnquiries() {
 //LatestStudents Api
 // ========== STUDENT PAGINATION ==========
 let studentCurrentPage = 1;
-let studentPageSize = 20;
+let studentPageSize = 10;
 let studentTotalPages = 1;
 
 document.addEventListener("DOMContentLoaded", function () {
