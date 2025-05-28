@@ -86,7 +86,7 @@ const studentController = {
     },
 
 
-    
+
 
 
     // total count
@@ -111,62 +111,110 @@ const studentController = {
     },
 
     // GET latest enquiries with pagination
-getLatestEnquiries: (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const limit = 10;
-    const offset = (page - 1) * limit;
+    getLatestEnquiries: (req, res) => {
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+        const offset = (page - 1) * limit;
 
-    const countQuery = "SELECT COUNT(*) AS total FROM enroll";
-    db.query(countQuery, (err, countResult) => {
-        if (err) return res.status(500).json({ error: "Database count error" });
+        const countQuery = "SELECT COUNT(*) AS total FROM enroll";
+        db.query(countQuery, (err, countResult) => {
+            if (err) return res.status(500).json({ error: "Database count error" });
 
-        const totalRecords = countResult[0].total;
-        const totalPages = Math.ceil(totalRecords / limit);
+            const totalRecords = countResult[0].total;
+            const totalPages = Math.ceil(totalRecords / limit);
 
-        const dataQuery = `
+            const dataQuery = `
             SELECT DATE_FORMAT(enrolldate, '%Y-%m-%d') AS enrolldate, name, phone, course, city
             FROM enroll
             ORDER BY id DESC
             LIMIT ? OFFSET ?
         `;
-        db.query(dataQuery, [limit, offset], (err, dataResult) => {
-            if (err) return res.status(500).json({ error: "Database data error" });
+            db.query(dataQuery, [limit, offset], (err, dataResult) => {
+                if (err) return res.status(500).json({ error: "Database data error" });
 
-            res.json({
-                enquiries: dataResult,
-                totalPages,
-                currentPage: page
+                res.json({
+                    enquiries: dataResult,
+                    totalPages,
+                    currentPage: page
+                });
             });
         });
-    });
-},
+    },
 
-// GET latest students with pagination
-getLatestStudents: (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const offset = (page - 1) * limit;
+    //**export enquries to excell */
+    exportexcellEnquiries: (req, res) => {
+        const type = req.query.type;
+        const limit = 10;
+        let query = `SELECT DATE_FORMAT(enrolldate, '%Y-%m-%d') AS enrolldate, name, phone, course, city FROM enroll`;
+        let params = [];
 
-    const countQuery = "SELECT COUNT(*) AS total FROM student";
-    const dataQuery = `
+        if (type === "current") {
+            const page = parseInt(req.query.page) || 1;
+            const offset = (page - 1) * limit;
+            query += " ORDER BY id DESC LIMIT ? OFFSET ?";
+            params = [limit, offset];
+        } else if (type === "custom") {
+            const from = parseInt(req.query.from);
+            const to = parseInt(req.query.to);
+            const offset = (from - 1) * limit;
+            const total = (to - from + 1) * limit;
+            query += " ORDER BY id DESC LIMIT ? OFFSET ?";
+            params = [total, offset];
+        } else {
+            // all
+            query += " ORDER BY id DESC";
+        }
+
+        db.query(query, params, async (err, results) => {
+            if (err) return res.status(500).json({ error: "Export query error" });
+
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet("Enquiries");
+
+            worksheet.columns = [
+                { header: "Date", key: "enrolldate", width: 15 },
+                { header: "Name", key: "name", width: 25 },
+                { header: "Phone", key: "phone", width: 15 },
+                { header: "Course", key: "course", width: 20 },
+                { header: "City", key: "city", width: 20 }
+            ];
+
+            worksheet.addRows(results);
+
+            res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            res.setHeader("Content-Disposition", `attachment; filename=enquiries_${type}.xlsx`);
+
+            await workbook.xlsx.write(res);
+            res.end();
+        });
+    },
+
+    // GET latest students with pagination
+    getLatestStudents: (req, res) => {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = (page - 1) * limit;
+
+        const countQuery = "SELECT COUNT(*) AS total FROM student";
+        const dataQuery = `
         SELECT StudentID, BatchCode, CONCAT(FirstName, ' ', LastName) AS FullName, MobileNumber, Course, Town AS City 
         FROM student 
         ORDER BY StudentID DESC 
         LIMIT ? OFFSET ?
     `;
 
-    db.query(countQuery, (err, countResult) => {
-        if (err) return res.status(500).json({ error: "Count query error" });
+        db.query(countQuery, (err, countResult) => {
+            if (err) return res.status(500).json({ error: "Count query error" });
 
-        const total = countResult[0].total;
+            const total = countResult[0].total;
 
-        db.query(dataQuery, [limit, offset], (err, results) => {
-            if (err) return res.status(500).json({ error: "Data query error" });
+            db.query(dataQuery, [limit, offset], (err, results) => {
+                if (err) return res.status(500).json({ error: "Data query error" });
 
-            res.json({ students: results, total });
+                res.json({ students: results, total });
+            });
         });
-    });
-},
+    },
 
 
     // **API to Fetch Batch Codes**

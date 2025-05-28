@@ -97,6 +97,7 @@ app.get('/total-students', studentController.getTotalStudents);
 app.get('/total-enquiries', studentController.getTotalEnquiries);
 //**FECH API TO THE /latest-enquiries LATEST 10 ENQUIRES */
 app.get('/latest-enquiries', studentController.getLatestEnquiries);
+app.get("/export-enquiries", studentController.exportexcellEnquiries);
 //**FECH API RO THE /get-batch-codes TO GET THE STUDENT TABLE */
 app.get('/get-batch-codes', studentController.getBatchCodes);
 //**fetch the /export-students api to dwnload the excel sheet */

@@ -230,6 +230,21 @@
 				<div class="table">
 					<div class="head" style="display: flex; justify-content: space-between; align-items: center;">
 						<h3>Latest Enquiries</h3>
+						<div style="margin: 10px 0;">
+							<label>Export Enquiries:</label>
+							<select id="exportType" onchange="toggleCustomPageInputs()">
+							  <option value="current">Current Page</option>
+							  <option value="all">All Pages</option>
+							  <option value="custom">Custom Pages</option>
+							</select>
+						  
+							<span id="customPageRange" style="display:none;">
+							  From <input type="number" id="fromPage" style="width: 40px;" min="1">
+							  To <input type="number" id="toPage" style="width: 40px;" min="1">
+							</span>
+						  
+							<button onclick="exportEnquiries()">Export to Excel</button>
+						  </div>
 						<div id="enquiryPager" style="font-size: 12px;">
 							Page <span id="enquiryCurrentPage">1</span> of <span id="enquiryTotalPages">1</span>
 							<button onclick="changeEnquiryPage(-1)">Prev</button>
@@ -256,7 +271,6 @@
 						</tbody>
 					</table>
 				</div>
-				
 			</div>
 	</main>
 

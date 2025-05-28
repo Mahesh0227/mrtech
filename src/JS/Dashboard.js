@@ -276,6 +276,36 @@ function jumpToEnquiryPage(inputPage) {
 	}
 }
 
+//**export enquries to excell */
+function toggleCustomPageInputs() {
+	const type = document.getElementById("exportType").value;
+	document.getElementById("customPageRange").style.display = (type === "custom") ? "inline" : "none";
+  }
+  
+  function exportEnquiries() {
+	const type = document.getElementById("exportType").value;
+  
+	let url = "/export-enquiries?type=" + type;
+  
+	if (type === "current") {
+	  url += `&page=${enquiryCurrentPage}`;
+	} else if (type === "custom") {
+	  const from = parseInt(document.getElementById("fromPage").value);
+	  const to = parseInt(document.getElementById("toPage").value);
+  
+	  if (isNaN(from) || isNaN(to) || from < 1 || to < from || to > enquiryTotalPages) {
+		alert("Please enter a valid custom page range.");
+		return;
+	  }
+  
+	  url += `&from=${from}&to=${to}`;
+	}
+  
+	window.open(url, "_blank");
+  }
+  
+
+
 //** END,,,,,GET THE LATEST 10 ENQURIES API  */
 
 // Load statuses dynamically on page load
