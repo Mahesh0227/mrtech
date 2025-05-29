@@ -331,6 +331,7 @@ function submitStatus(id, selectedStatus = null) {
 			console.error("Error updating status:", err);
 		});
 }
+
 //**set the status */
 window.addEventListener('DOMContentLoaded', () => {
 	const statusFilter = document.getElementById('statusFilter');
@@ -339,7 +340,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		.then(res => res.json())
 		.then(statuses => {
 			// Clear existing options except maybe "All"
-			statusFilter.innerHTML = '<option value="Status">Select Status</option>';
+			statusFilter.innerHTML = '<option value="Select Status">Select Status</option>';
 
 			statuses.forEach(status => {
 				const option = document.createElement('option');
@@ -360,8 +361,8 @@ function toggleCustomPageInputs() {
 	const exportType = document.getElementById("exportType").value;
 	const customPageRange = document.getElementById("customPageRange");
 	customPageRange.style.display = exportType === "custom" ? "block" : "none";
-  }
-  
+}
+
 function exportEnquiries() {
 	const type = document.getElementById("exportType").value;
 	const status = document.getElementById("statusFilter").value;
@@ -384,7 +385,7 @@ function exportEnquiries() {
 
 	window.open(url, "_blank");
 }
-//** END,,,,,GET THE LATEST 10 ENQURIES API  */
+//** END GET THE LATEST 10 ENQURIES API  */
 
 // Load statuses dynamically on page load
 document.addEventListener("DOMContentLoaded", async () => {
