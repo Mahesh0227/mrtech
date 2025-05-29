@@ -146,24 +146,26 @@ const studentController = {
         const type = req.query.type;
         const status = req.query.status || 'all';
         const limit = 10;
-
+    
         let baseQuery = `
             SELECT DATE_FORMAT(enrolldate, '%Y-%m-%d') AS enrolldate,
                    name, phone, course, city, status, remark
             FROM enroll
         `;
+    
         let conditions = [];
         let params = [];
-
-        if (status !== 'all') {
+    
+        // Apply status filter before pagination
+        if (status.toLowerCase() !== 'all') {
             conditions.push("status = ?");
             params.push(status);
         }
-
+    
         if (conditions.length > 0) {
             baseQuery += " WHERE " + conditions.join(" AND ");
         }
-
+    
         if (type === "current") {
             const page = parseInt(req.query.page) || 1;
             const offset = (page - 1) * limit;
@@ -177,15 +179,16 @@ const studentController = {
             baseQuery += " ORDER BY id DESC LIMIT ? OFFSET ?";
             params.push(total, offset);
         } else {
+            // "all" type (no pagination, just filter)
             baseQuery += " ORDER BY id DESC";
         }
-
+    
         db.query(baseQuery, params, async (err, results) => {
             if (err) return res.status(500).json({ error: "Export query error" });
-
+    
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet("Enquiries");
-
+    
             worksheet.columns = [
                 { header: "Date", key: "enrolldate", width: 15 },
                 { header: "Name", key: "name", width: 25 },
@@ -195,12 +198,12 @@ const studentController = {
                 { header: "Status", key: "status", width: 15 },
                 { header: "Remark", key: "remark", width: 30 },
             ];
-
+    
             worksheet.addRows(results);
-
+    
             res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             res.setHeader("Content-Disposition", `attachment; filename=enquiries_${type}_${status}.xlsx`);
-
+    
             await workbook.xlsx.write(res);
             res.end();
         });
