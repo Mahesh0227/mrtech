@@ -32,7 +32,37 @@ const enquiryController = {
     },
 
     // API to fetch the latest 10 enquiries
-  
+
+    updateEnquiryStatus: (req, res) => {
+        const { id, status, remark } = req.body;
+        if (!id || !status) {
+            return res.status(400).json({ success: false, message: "Missing fields" });
+        }
+
+        const query = `UPDATE enroll SET status = ?, remark = ? WHERE id = ?`;
+        db.query(query, [status, remark || null, id], (err, result) => {
+            if (err) {
+                console.error("Error updating enquiry status:", err);
+                return res.status(500).json({ success: false, message: "Database update error" });
+            }
+            return res.json({ success: true });
+        });
+    },
+
+    // In your server.js or relevant controller file
+
+    getstatusoptions: (req, res) => {
+        const query = "SELECT DISTINCT status FROM enroll   "; // adjust table/column name as per your DB
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: "Database query failed" });
+            }
+            // results will be like [{status: 'Joined'}, {status: 'Not Interested'}, ...]
+            const statuses = results.map(row => row.status);
+            res.json(statuses);
+        });
+    },
 };
 
 module.exports = enquiryController;

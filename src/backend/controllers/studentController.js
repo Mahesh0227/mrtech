@@ -124,7 +124,7 @@ const studentController = {
             const totalPages = Math.ceil(totalRecords / limit);
 
             const dataQuery = `
-            SELECT DATE_FORMAT(enrolldate, '%Y-%m-%d') AS enrolldate, name, phone, course, city
+            SELECT DATE_FORMAT(enrolldate, '%Y-%m-%d') AS enrolldate, id, name, phone, course, city, status, remark
             FROM enroll
             ORDER BY id DESC
             LIMIT ? OFFSET ?
@@ -144,28 +144,43 @@ const studentController = {
     //**export enquries to excell */
     exportexcellEnquiries: (req, res) => {
         const type = req.query.type;
+        const status = req.query.status || 'all';
         const limit = 10;
-        let query = `SELECT DATE_FORMAT(enrolldate, '%Y-%m-%d') AS enrolldate, name, phone, course, city FROM enroll`;
+
+        let baseQuery = `
+            SELECT DATE_FORMAT(enrolldate, '%Y-%m-%d') AS enrolldate,
+                   name, phone, course, city, status, remark
+            FROM enroll
+        `;
+        let conditions = [];
         let params = [];
+
+        if (status !== 'all') {
+            conditions.push("status = ?");
+            params.push(status);
+        }
+
+        if (conditions.length > 0) {
+            baseQuery += " WHERE " + conditions.join(" AND ");
+        }
 
         if (type === "current") {
             const page = parseInt(req.query.page) || 1;
             const offset = (page - 1) * limit;
-            query += " ORDER BY id DESC LIMIT ? OFFSET ?";
-            params = [limit, offset];
+            baseQuery += " ORDER BY id DESC LIMIT ? OFFSET ?";
+            params.push(limit, offset);
         } else if (type === "custom") {
             const from = parseInt(req.query.from);
             const to = parseInt(req.query.to);
             const offset = (from - 1) * limit;
             const total = (to - from + 1) * limit;
-            query += " ORDER BY id DESC LIMIT ? OFFSET ?";
-            params = [total, offset];
+            baseQuery += " ORDER BY id DESC LIMIT ? OFFSET ?";
+            params.push(total, offset);
         } else {
-            // all
-            query += " ORDER BY id DESC";
+            baseQuery += " ORDER BY id DESC";
         }
 
-        db.query(query, params, async (err, results) => {
+        db.query(baseQuery, params, async (err, results) => {
             if (err) return res.status(500).json({ error: "Export query error" });
 
             const workbook = new ExcelJS.Workbook();
@@ -176,20 +191,21 @@ const studentController = {
                 { header: "Name", key: "name", width: 25 },
                 { header: "Phone", key: "phone", width: 15 },
                 { header: "Course", key: "course", width: 20 },
-                { header: "City", key: "city", width: 20 }
+                { header: "City", key: "city", width: 20 },
+                { header: "Status", key: "status", width: 15 },
+                { header: "Remark", key: "remark", width: 30 },
             ];
 
             worksheet.addRows(results);
 
             res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            res.setHeader("Content-Disposition", `attachment; filename=enquiries_${type}.xlsx`);
+            res.setHeader("Content-Disposition", `attachment; filename=enquiries_${type}_${status}.xlsx`);
 
             await workbook.xlsx.write(res);
             res.end();
         });
     },
 
-    // GET latest students with pagination
     getLatestStudents: (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
