@@ -225,166 +225,157 @@ function jumpToStudentPage(inputPage) {
 }
 
 // ========== ENQUIRY PAGINATION ==========
-let enquiryCurrentPage = 1;
-let enquiryTotalPages = 1;
+let enquiriesCurrentPage = 1;
+let enquiriesTotalPages = 1;
 
-function fetchEnquiryPage(page) {
-	fetch(`/latest-enquiries?page=${page}`)
-		.then(response => response.json())
-		.then(data => {
-			const tableBody = document.getElementById("latestEnquiries");
-			tableBody.innerHTML = "";
+window.addEventListener('DOMContentLoaded', () => {
+	loadEnquiries(statusFilter.value, enquiriesCurrentPage);
 
-			if (!data.enquiries || data.enquiries.length === 0) {
-				tableBody.innerHTML = `<tr><td colspan="9">No enquiries found.</td></tr>`;
-				return;
+    fetch('/get-status-options')
+        .then(res => res.json())
+        .then(statuses => {
+            statusFilter.innerHTML = '<option value="Select Status">Select Status</option>';
+            statuses.forEach(status => {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = status;
+                statusFilter.appendChild(option);
+            });
+        });
+
+		statusFilter.addEventListener('change', () => {
+			enquiriesCurrentPage = 1;
+			const selected = statusFilter.value;
+			if (selected && selected !== "Select Status") {
+				loadEnquiries(selected, enquiriesCurrentPage);
+			} else {
+				document.getElementById("latestEnquiries").innerHTML = '';
+				document.getElementById("enquiriesCurrentPage").innerText = '0';
+				document.getElementById("enquiriesTotalPages").innerText = '0';
 			}
-
-			data.enquiries.forEach(enquiry => {
-				const row = document.createElement("tr");
-				row.innerHTML = `
-						<td>${enquiry.id}</td>
-						<td>${enquiry.enrolldate}</td>
-						<td>${enquiry.name}</td>
-						<td>${enquiry.phone}</td>
-						<td>${enquiry.course}</td>
-						<td>${enquiry.city}</td>
-						<td>${enquiry.status}</td>
-						<td>${enquiry.remark}</td>
-						<td>
-							<select onchange="handleStatusChange(this, '${enquiry.id}')">
-								<option value="">--Select--</option>
-								<option value="Joined">Joined</option>
-								<option value="Not Interested">Not Interested</option>
-								<option value="May Be">May Be</option>
-							</select>
-							<div id="remarkBox-${enquiry.id}" style="display:none; margin-top: 5px;">
-								<input type="text" id="remark-${enquiry.id}" placeholder="Enter reason..." 
-									onblur="submitStatus('${enquiry.id}')">
-							</div>
-						</td>
-					`;
-				tableBody.appendChild(row);
-			});
-
-			enquiryCurrentPage = data.currentPage;
-			enquiryTotalPages = data.totalPages;
-
-			document.getElementById("enquiryCurrentPage").textContent = enquiryCurrentPage;
-			document.getElementById("enquiryTotalPages").textContent = enquiryTotalPages;
-		})
-		.catch(error => {
-			console.error("Error fetching enquiries:", error);
-			document.getElementById("latestEnquiries").innerHTML = `<tr><td colspan="6">Failed to load enquiries.</td></tr>`;
 		});
+		
+});
+
+function loadEnquiries(status, page = 1) {
+    fetch(`/get-enquiries?status=${encodeURIComponent(status)}&page=${page}`)
+        .then(res => res.json())
+        .then(data => {
+            renderEnquiryTable(data.enquiries);
+            enquiriesTotalPages = data.totalPages;
+            document.getElementById('enquiriesCurrentPage').innerText = data.currentPage;
+            document.getElementById('enquiriesTotalPages').innerText = data.totalPages;
+        });
 }
 
-function changeEnquiryPage(offset) {
-	const newPage = enquiryCurrentPage + offset;
-	if (newPage >= 1 && newPage <= enquiryTotalPages) {
-		fetchEnquiryPage(newPage);
-	}
-}
+function renderEnquiryTable(enquiries) {
+    const tableBody = document.getElementById("latestEnquiries");
+    tableBody.innerHTML = "";
 
-function jumpToEnquiryPage(inputPage) {
-	const page = parseInt(inputPage);
-	if (!isNaN(page) && page >= 1 && page <= enquiryTotalPages) {
-		fetchEnquiryPage(page);
-	} else {
-		alert(`Please enter a page number between 1 and ${enquiryTotalPages}`);
-	}
+    if (!enquiries || enquiries.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="9">No enquiries found for selected status.</td></tr>`;
+        return;
+    }
+
+    enquiries.forEach(enquiry => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${enquiry.id}</td>
+            <td>${enquiry.enrolldate}</td>
+            <td>${enquiry.name}</td>
+            <td>${enquiry.phone}</td>
+            <td>${enquiry.course}</td>
+            <td>${enquiry.city}</td>
+            <td>${enquiry.status}</td>
+            <td>${enquiry.remark}</td>
+            <td>
+                <select onchange="handleStatusChange(this, '${enquiry.id}')">
+                    <option value="">--Select--</option>
+                    <option value="Joined">Joined</option>
+                    <option value="Not Interested">Not Interested</option>
+                    <option value="May Be">May Be</option>
+                </select>
+                <div id="remarkBox-${enquiry.id}" style="display:none; margin-top: 5px;">
+                    <input type="text" id="remark-${enquiry.id}" placeholder="Enter reason..." 
+                        onblur="submitStatus('${enquiry.id}')">
+                </div>
+            </td>`;
+        tableBody.appendChild(row);
+    });
 }
 
 function handleStatusChange(selectElem, id) {
-	const selectedValue = selectElem.value;
-	const remarkBox = document.getElementById(`remarkBox-${id}`);
+    const selectedValue = selectElem.value;
+    const remarkBox = document.getElementById(`remarkBox-${id}`);
 
-	if (selectedValue === "May Be") {
-		remarkBox.style.display = "block";
-	} else {
-		remarkBox.style.display = "none";
-		submitStatus(id, selectedValue);  // Immediately submit for other statuses
-	}
+    if (selectedValue === "May Be") {
+        remarkBox.style.display = "block";
+    } else {
+        remarkBox.style.display = "none";
+        submitStatus(id, selectedValue);
+    }
 }
 
 function submitStatus(id, selectedStatus = null) {
-	const status = selectedStatus || "May Be";
-	const remarkInput = document.getElementById(`remark-${id}`);
-	const remark = remarkInput ? remarkInput.value.trim() : "";
+    const status = selectedStatus || "May Be";
+    const remarkInput = document.getElementById(`remark-${id}`);
+    const remark = remarkInput ? remarkInput.value.trim() : "";
 
-
-	fetch("/update-enquiry-status", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ id, status, remark })
-	})
-		.then(res => res.json())
-		.then(data => {
-			if (data.success) {
-				alert("Status updated successfully");
-				fetchEnquiryPage(enquiryCurrentPage); // refresh table
-			} else {
-				alert("Failed to update status");
-			}
-		})
-		.catch(err => {
-			console.error("Error updating status:", err);
-		});
+    fetch("/update-enquiry-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status, remark })
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("Status updated successfully");
+                loadEnquiries(document.getElementById('statusFilter').value, enquiriesCurrentPage);
+            } else {
+                alert("Failed to update status");
+            }
+        });
 }
 
-//**set the status */
-window.addEventListener('DOMContentLoaded', () => {
-	const statusFilter = document.getElementById('statusFilter');
+function changeEnquiryPage(offset) {
+    const newPage = enquiriesCurrentPage + offset;
+    if (newPage >= 1 && newPage <= enquiriesTotalPages) {
+        enquiriesCurrentPage = newPage;
+        loadEnquiries(document.getElementById('statusFilter').value, newPage);
+    }
+}
 
-	fetch('/get-status-options')
-		.then(res => res.json())
-		.then(statuses => {
-			// Clear existing options except maybe "All"
-			statusFilter.innerHTML = '<option value="Select Status">Select Status</option>';
+function jumpToEnquiryPage(page) {
+    page = parseInt(page);
+    if (page >= 1 && page <= enquiriesTotalPages) {
+        enquiriesCurrentPage = page;
+        loadEnquiries(document.getElementById('statusFilter').value, page);
+    }
+}
 
-			statuses.forEach(status => {
-				const option = document.createElement('option');
-				option.value = status;
-				option.textContent = status;
-				statusFilter.appendChild(option);
-			});
-		})
-		.catch(err => {
-			console.error('Error fetching status options:', err);
-		});
-});
-//**get the status */  
-
-
-//**export enquries to excell */
 function toggleCustomPageInputs() {
-	const exportType = document.getElementById("exportType").value;
-	const customPageRange = document.getElementById("customPageRange");
-	customPageRange.style.display = exportType === "custom" ? "block" : "none";
+    const type = document.getElementById("exportType").value;
+    const customPageRange = document.getElementById("customPageRange");
+    customPageRange.style.display = (type === "custom") ? "inline-block" : "none";
 }
 
 function exportEnquiries() {
-	const type = document.getElementById("exportType").value;
-	const status = document.getElementById("statusFilter").value;
+    const type = document.getElementById("exportType").value;
+    const status = document.getElementById("statusFilter").value;
+    const from = document.getElementById("fromPage")?.value;
+    const to = document.getElementById("toPage")?.value;
 
-	let url = `/export-enquiries?type=${type}&status=${encodeURIComponent(status)}`;
+    let query = `/export-enquiries?type=${type}&status=${status}`;
 
-	if (type === "current") {
-		url += `&page=${enquiryCurrentPage}`;
-	} else if (type === "custom") {
-		const from = parseInt(document.getElementById("fromPage").value);
-		const to = parseInt(document.getElementById("toPage").value);
+    if (type === "custom") {
+        query += `&from=${from}&to=${to}`;
+    } else if (type === "current") {
+        query += `&page=${enquiriesCurrentPage}`;
+    }
 
-		if (isNaN(from) || isNaN(to) || from < 1 || to < from || to > enquiryTotalPages) {
-			alert("Please enter a valid custom page range.");
-			return;
-		}
-
-		url += `&from=${from}&to=${to}`;
-	}
-
-	window.open(url, "_blank");
+    window.open(query, '_blank');
 }
+
 //** END GET THE LATEST 10 ENQURIES API  */
 
 // Load statuses dynamically on page load
