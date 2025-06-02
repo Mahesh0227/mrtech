@@ -109,37 +109,7 @@ const studentController = {
             res.json({ totalEnquiries: result[0].totalEnquiries });
         });
     },
-
-    // GET latest enquiries with pagination
-    getLatestEnquiries: (req, res) => {
-        const page = parseInt(req.query.page) || 1;
-        const limit = 10;
-        const offset = (page - 1) * limit;
-
-        const countQuery = "SELECT COUNT(*) AS total FROM enroll";
-        db.query(countQuery, (err, countResult) => {
-            if (err) return res.status(500).json({ error: "Database count error" });
-
-            const totalRecords = countResult[0].total;
-            const totalPages = Math.ceil(totalRecords / limit);
-
-            const dataQuery = `
-            SELECT DATE_FORMAT(enrolldate, '%Y-%m-%d') AS enrolldate, id, name, phone, course, city, status, remark
-            FROM enroll
-            ORDER BY id DESC
-            LIMIT ? OFFSET ?
-        `;
-            db.query(dataQuery, [limit, offset], (err, dataResult) => {
-                if (err) return res.status(500).json({ error: "Database data error" });
-
-                res.json({
-                    enquiries: dataResult,
-                    totalPages,
-                    currentPage: page
-                });
-            });
-        });
-    },
+   
 
     getLatestStudents: (req, res) => {
         const page = parseInt(req.query.page) || 1;

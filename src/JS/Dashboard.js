@@ -243,18 +243,10 @@ window.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-		statusFilter.addEventListener('change', () => {
-			enquiriesCurrentPage = 1;
-			const selected = statusFilter.value;
-			if (selected && selected !== "Select Status") {
-				loadEnquiries(selected, enquiriesCurrentPage);
-			} else {
-				document.getElementById("latestEnquiries").innerHTML = '';
-				document.getElementById("enquiriesCurrentPage").innerText = '0';
-				document.getElementById("enquiriesTotalPages").innerText = '0';
-			}
-		});
-		
+    statusFilter.addEventListener('change', () => {
+        enquiriesCurrentPage = 1;
+        loadEnquiries(statusFilter.value, enquiriesCurrentPage);
+    });
 });
 
 function loadEnquiries(status, page = 1) {

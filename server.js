@@ -81,7 +81,7 @@ app.get('/student/:id', studentController.getStudentById);// GET THE PDF the stu
 app.get('/latest-students', studentController.getLatestStudents);//fech api to the /latest-students latest 10 student registrations
 app.get('/total-students', studentController.getTotalStudents);// fech api to the /total-students total count of registrations
 app.get('/total-enquiries', studentController.getTotalEnquiries);// fech api to the /total-enquiries total enquiries count
-app.get('/latest-enquiries', studentController.getLatestEnquiries);//**FECH API TO THE /latest-enquiries LATEST 10 ENQUIRES */
+
 app.get('/get-batch-codes', studentController.getBatchCodes);//**FECH API RO THE /get-batch-codes TO GET THE STUDENT TABLE */
 app.get('/export-students', studentController.exportStudents);//**fetch the /export-students api to dwnload the excel sheet */
 app.get('/getstudents', studentController.getstudents);//**FETCH THE API TO VEW THE STUNDETS WITH SAME CODE */

@@ -66,7 +66,12 @@ const enquiryController = {
         const limit = 10;
         const offset = (page - 1) * limit;
 
-        let query = "SELECT * FROM enroll";
+        let query = `
+        SELECT 
+          id,
+          DATE_FORMAT(enrolldate, '%d-%m-%Y') AS enrolldate,
+          name, phone, course, city, status, remark
+        FROM enroll`;
         let countQuery = "SELECT COUNT(*) as count FROM enroll";
         let whereClause = "";
         let params = [];
