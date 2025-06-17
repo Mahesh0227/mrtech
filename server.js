@@ -29,6 +29,12 @@ const securityController = require("./src/backend/controllers/securityController
 const settingsController = require("./src/backend/controllers/settingsController");
 const studentdashboardController = require("./src/backend/controllers/studentdashboardController");
 
+
+
+//**indext.html api's */
+app.get("/coursesdropdown", coursecontrollers.getCourses);
+
+
 // << AUTH ROUTES >>
 app.post('/login', authController.loginUnified);
 app.post("/new-register-student", authController.registernewStudent);

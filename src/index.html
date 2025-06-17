@@ -338,6 +338,22 @@
                 arrows: true 
             }).mount();
         });
+
+        <!-- courses dropdowm aip-->
+        document.addEventListener("DOMContentLoaded", function () {
+    fetch("/coursesdropdown") // API Call to fetch courses
+        .then(response => response.json())
+        .then(data => {
+            const courseDropdown = document.getElementById("course"); // Match ID
+            data.forEach(course => {
+                let option = document.createElement("option");
+                option.value = course.coursename; // Set coursename as value
+                option.textContent = course.coursename; // Display coursename
+                courseDropdown.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Error fetching courses:", error));
+});
     </script>
 </body>
 
