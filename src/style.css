@@ -13,7 +13,7 @@
 
 /* Apply the Aurora animation */
 .animate-aurora {
-    background: linear-gradient(270deg, #283a6c, #015869, #b5b9dc, #7088c6);
+    background: linear-gradient(270deg, #a9bcee, #b9e4ec, #b6bbe6, #b0bde6);
     background-size: 400% 400%;
     animation: aurora 15s ease infinite;
 }
@@ -482,3 +482,69 @@
         margin-bottom: 1rem;
     }
 }
+.site-footer {
+    display: flex;
+    justify-content: center;
+  background-color:#040b61;
+  color: white;
+  padding: 60px 20px 30px;
+  font-size: 0.95rem;
+}
+.Address{
+    margin-top: -9%;
+    
+}
+
+
+.site-footer a {
+  color: #cce8f4;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+.site-footer .footer-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+.site-footer h6 {
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.site-footer ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.footer-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  margin: 30px 0;
+}
+
+.copyright {
+  font-size: 1rem;
+  color: #cce8f4;
+  margin-left: 70%;
+  margin-top: -3%;
+}
+.social-icons {
+  margin-top: 10px;
+}
+
+.social-icons a {
+  color: #ffffff;
+  margin-right: 15px;
+  font-size: 1.2rem;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+    .social-icons a:hover {
+      color: #ffd700; /* gold highlight on hover */
+    }

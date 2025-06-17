@@ -9,6 +9,8 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=login" />
     <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css  ">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <title>Home - Medha XL</title>
 
@@ -28,13 +30,13 @@
             <span class="block w-8 h-1 bg-white"></span>
         </div>
 
-        <div class="flex-grow text-center desktop-nav hidden lg:block">
+        <div class="flex-grow text-center desktop-nav hidden lg:block" style="color: black; font-size: 20px;" >
             <ul class="flex justify-center space-x-6">
-                <li><a href="./index.html" class="text-white hover:text-gray-300">Home</a></li>
-                <li><a href="PAGES/about.html" class="text-white hover:text-gray-300">About</a></li>
-                <li><a href="PAGES/courses.html" class="text-white hover:text-gray-300">Courses</a></li>
+                <li><a href="./index.html" >Home</a></li>
+                <li><a href="PAGES/about.html" >About</a></li>
+                <li><a href="PAGES/courses.html" >Courses</a></li>
                 <li class="dropdown relative group">
-                    <a href="#" class="text-white hover:text-gray-300">Tools</a>
+                    <a href="#" >Tools</a>
                     <div class="dropdown-content absolute bg-white text-black mt-1 rounded shadow-lg">
                         <a
                             href="https://appv2.resumebuilder.com/build-resume/section/cntc?skin=null&theme=null&templateflow=selectresume">Resume
@@ -51,15 +53,15 @@
                         </div>
                     </div>
                 </li>
-                <li><a href="PAGES/contact.html" class="text-white hover:text-gray-300">Contact</a></li>
-                <li><a href="PAGES/team.html" class="text-white hover:text-gray-300">Team</a></li>
+                <li><a href="PAGES/contact.html" style="color: black; font-size: 20px;">Contact</a></li>
+                <li><a href="PAGES/team.html" style="color: black; font-size: 20px;">Team</a></li>
                 <a href="https://wa.me/9989443915" target="_blank"
-                    class="text-white hover:text-gray-300 flex items-center">
+                    class="flex items-center" style="color: black; font-size: 20px;">
                     <img src="img/icons8-whatsapp-96.png" alt="WhatsApp" class="h-6 w-6 mr-2"> WhatsApp
                 </a>
 
                 <li>
-                    <a href="PAGES/loginpage.html" class="text-white hover:text-gray-300 ml-4 flex items-center">
+                    <a href="PAGES/loginpage.html" class="text-white hover:text-gray-300 ml-4 flex items-center"style="color: black; font-size: 20px;">
                         <span class="material-symbols-outlined mr-2">login</span>
                         Sign In
                     </a>
@@ -273,19 +275,44 @@
         </div>
     </section>
 
-    <footer class="bg-indigo-800 text-center py-4">
-        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
-            <p class="text-white">&copy; 2024 Medha XL. All rights reserved.</p>
-            <div class="mt-4 text-center md:mt-0">
-                <p class="text-white">Visitors:
-                    <script type="text/javascript" src="https://freehitcounters.org/count/fwjm"></script><br>
-                    <a href='https://hauckautoren.de/schreiben-einer-masterarbeit'
-                        class="text-indigo-300 hover:underline">Ghostwriter Masterarbeit</a>
-                    <script type='text/javascript'
-                        src='https://www.whomania.com/ctr?id=4bcb3f0e044fdab99635da8686d63f3c662a44cf'></script>
-                </p>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row text-center text-md-start">
+                <div class="col-md-4 mb-4 mb-md-0" style="margin-left: -70%;">
+                    <h5 class="footer-brand"> MR TECHNOLOGIES</h5>
+                    <p>all IT Courses are provided</p>
+                </div>
+            <div class="Address" >  
+                <h5 class="footer-brand"  style="margin-left: 1%;"> Address</h5>
+                <p>              2nd Floor, BSNL Customer care building,<br>
+                30-5-8, Bhanu St, near Chennai Shopping mall,<br>
+                Daba Gardens, Allipuram, Visakhapatnam, <br>
+            Andhra Pradesh <br>
+              530020</p>
+            </div>
+            <div class="col-md-4" style="margin-left: 70%; margin-top: -12%; margin-bottom: 5%;">
+                <h6 class="footer-brand">Contact Us</h6>
+                <p>Email: <a href="mailto:support@sridurgaautomobiles.com">support@mrtechnologes</a></p>
+                <p>Phone: +91 1234567890</p>
             </div>
         </div>
+        <hr class="footer-divider" />
+
+
+        <div class="col-md-4" style="margin-bottom: 3%;">
+            <h6 style="margin-left: 10%; font-size: larger;">Follow Us</h6>
+            <div class="social-icons" style="margin-left: 10%;">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+            <div class="text-center copyright">
+                <p>&copy; 2025 MR TECHNOLOGIES. All rights reserved.</p>
+            </div>
+        </div>
+        </div>
+
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.9/dist/js/splide.min.js"></script>
@@ -302,17 +329,13 @@
         // Splide carousel initialization
         document.addEventListener('DOMContentLoaded', function () {
             new Splide('#course-carousel', {
-                type: 'loop',
+                type: 'slide',
                 perPage: 3,
                 gap: '20px',
-                breakpoints: {
-                    1024: {
-                        perPage: 2,
-                    },
-                    640: {
-                        perPage: 1,
-                    },
-                },
+                gap    : '1rem',         // spacing between slides
+                rewind : false,          // do not loop back to the start
+                pagination: true,        // show dots
+                arrows: true 
             }).mount();
         });
     </script>
