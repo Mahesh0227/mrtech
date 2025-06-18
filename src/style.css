@@ -13,7 +13,7 @@
 
 /* Apply the Aurora animation */
 .animate-aurora {
-    background: linear-gradient(270deg, #a9bcee, #b9e4ec, #b6bbe6, #b0bde6);
+    background: linear-gradient(270deg,#a9bcee , #b9e4ec, #b6bbe6, #b0bde6);
     background-size: 400% 400%;
     animation: aurora 15s ease infinite;
 }
