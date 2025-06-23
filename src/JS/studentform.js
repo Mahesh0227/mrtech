@@ -153,31 +153,31 @@ function calculateAge() {
 }
 
 // Update sub-category based on selected category
-function updateSubCategory() {
-    const categorySelect = document.getElementById('category');
-    const subCategorySelect = document.getElementById('subCategory');
-    const category = categorySelect.value;
+// function updateSubCategory() {
+//     const categorySelect = document.getElementById('category');
+//     const subCategorySelect = document.getElementById('subCategory');
+//     const category = categorySelect.value;
 
-    // Clear existing options
-    subCategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
+//     // Clear existing options
+//     subCategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
 
-    // Add sub-categories based on selected category
-    const subCategories = {
-        'SC': ['SC'],
-        'ST': ['ST'],
-        'OBC': ['A', 'B', 'C', 'D', 'E'],
-        'GENERAL': ['GENERAL']
-    };
+//     // Add sub-categories based on selected category
+//     const subCategories = {
+//         'SC': ['SC'],
+//         'ST': ['ST'],
+//         'OBC': ['A', 'B', 'C', 'D', 'E'],
+//         'GENERAL': ['GENERAL']
+//     };
 
-    if (subCategories[category]) {
-        subCategories[category].forEach(subCat => {
-            const option = document.createElement('option');
-            option.value = subCat.toLowerCase();
-            option.textContent = subCat;
-            subCategorySelect.appendChild(option);
-        });
-    }
-}
+//     if (subCategories[category]) {
+//         subCategories[category].forEach(subCat => {
+//             const option = document.createElement('option');
+//             option.value = subCat.toLowerCase();
+//             option.textContent = subCat;
+//             subCategorySelect.appendChild(option);
+//         });
+//     }
+// }
 
 window.onload = function () {
     const yearSelect = document.getElementById("yearPassing");
@@ -597,3 +597,4 @@ function updateDue() {
 }
 
 //**!Cal of the Fee Section */
+

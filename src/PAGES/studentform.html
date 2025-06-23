@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../CSS/studentform.css">
-    <script src="../backend/middleware/tokenvalidity.js"></script>
+    <!-- <script src="../backend/middleware/tokenvalidity.js"></script> -->
 
 </head>
 
@@ -122,7 +122,7 @@
     <main class="main-content">
         <div class="page-container">
             <div class="logo-container">
-                <img src="../img/MRTECH.png" alt="MedhaXL Logo" class="logo">
+                <img src="../img/MR TECH (2).png" alt="MedhaXL Logo" class="logo">
             </div>
 
             <div class="form-container">
@@ -234,7 +234,7 @@
                                 <input type="text" id="age" name="age" readonly class="readonly-input">
                             </div>
 
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="religion">Religion *</label>
                                 <select id="religion" name="religion" required>
                                     <option value="">Select Religion</option>
@@ -247,8 +247,8 @@
                                     <option value="OTHERSr">OTHERS</option>
                                 </select>
                                 <span class="error" id="religionError"></span>
-                            </div>
-                            <div class="form-group">
+                            </div> -->
+                            <!-- <div class="form-group">
                                 <label for="category">Category *</label>
                                 <select id="category" name="category" required onchange="updateSubCategory()">
                                     <option value="">Select Category</option>
@@ -265,7 +265,7 @@
                                 <select id="subCategory" name="subCategory">
                                     <option value="">Select Sub Category</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="mobile">Mobile Number *</label>
                                 <input type="tel" id="mobile" name="mobile" maxlength="10"
@@ -311,7 +311,7 @@
                             <h2>Educational Details</h2>
                         </div>
                         <div class="form-grid">
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="minQualification">Minimum Qualification *</label>
                                 <select id="minQualification" name="minQualification" required>
                                     <option value="">Select Qualification</option>
@@ -323,13 +323,8 @@
                                     <option value="B.TECH">B.TECH</option>
                                 </select>
                                 <span class="error" id="minQualificationError"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="yearPassing">Year of Passing Qualifying Exam *</label>
-                                <select id="yearPassing" name="yearPassing" required>
-                                </select>
-                                <span class="error" id="yearPassingError"></span>
-                            </div>
+                            </div> -->
+
                             <div class="form-group">
                                 <label for="highestQualification">Highest Qualification *</label>
                                 <select id="highestQualification" name="highestQualification" required>
@@ -346,6 +341,12 @@
                                 <span class="error" id="highestQualificationError"></span>
                             </div>
                             <div class="form-group">
+                                <label for="yearPassing">Year of Passing Qualifying Exam *</label>
+                                <select id="yearPassing" name="yearPassing" required>
+                                </select>
+                                <span class="error" id="yearPassingError"></span>
+                            </div>                            
+                            <!-- <div class="form-group">
                                 <label for="physicallyHandicapped">Physically Handicapped *</label>
                                 <select id="physicallyHandicapped" name="physicallyHandicapped" required>
                                     <option value="">Select</option>
@@ -353,7 +354,7 @@
                                     <option value="YES">YES</option>
                                 </select>
                                 <span class="error" id="physicallyHandicappedError"></span>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
